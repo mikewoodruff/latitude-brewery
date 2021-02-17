@@ -8,7 +8,7 @@ import time
 from flask import Flask, make_response, request
 
 # functions
-def set_branch_protection(org, repo, branch):
+def enable_branch_protection(org, repo, branch):
     try:
         # add headers for token and api version
         headers = {
@@ -32,8 +32,12 @@ def set_branch_protection(org, repo, branch):
         }
         json_body = json.dumps(body)
         # send PUT request
-        request = requests.put(uri, data=json_body, headers=headers, verify=False)
-        return request
+        request = requests.put(uri, data=json_body, headers=headers, verify=False).status_code
+        print(request)
+        if request == 200:
+            return True
+        else:
+            return False
     except Exception as e:
         print(e)
 
@@ -74,22 +78,31 @@ def main():
         # protect branch if all required params
         if len(branch) > 0 and len(org) > 0 and len(repo) > 0:
             # enabled protection
-            set_protection = set_branch_protection(org, repo, branch)
-            # sleep for a few seconds to allow the next call to return successfully
-            time.sleep(3)
-            # test to see if protection exists
-            get_protection = get_branch_protection(org, repo, branch)
-            if get_protection == True:
-                # return successful  response
-                return make_response(
-                    json.dumps({'Success':True}),
-                    200
-                )
+            enable_protection = enable_branch_protection(org, repo, branch)
+            # if protection was set, check repo to verify
+            if enable_protection == True:
+                # sleep for a second to allow the next call to return successfully
+                time.sleep(1)
+                # test to see if protection exists
+                get_protection = get_branch_protection(org, repo, branch)
+                if get_protection == True:
+                    # return successful  response
+                    return make_response(
+                        json.dumps({'Success':True}),
+                        200
+                    )
+                else:
+                    # something went wrong
+                    # return response
+                    return make_response(
+                        json.dumps({'Error':'Something went wrong there!'}),
+                        400
+                    )
             else:
                 # something went wrong
                 # return response
                 return make_response(
-                    json.dumps({'Error':'Something went wrong there!'}),
+                    json.dumps({'Error':'Something went wrong while enabling protection!'}),
                     400
                 )
         else:
