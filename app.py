@@ -76,7 +76,7 @@ def main():
         org = request.form.get('org')
         repo = request.form.get('repo')
         # protect branch if all required params
-        if len(branch) > 0 and len(org) > 0 and len(repo) > 0:
+        if branch is not None and org is not None and repo is not None:
             # enabled protection
             enable_protection = enable_branch_protection(org, repo, branch)
             # if protection was set, check repo to verify
