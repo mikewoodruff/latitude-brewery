@@ -1,6 +1,6 @@
 # runningohio
 
-Python app that adds protection on your main branches, for newly created GitHub repos, using GitHub webhooks.
+Python web service that adds protection on your main branches, for newly created GitHub repos, using GitHub webhooks.
 
 ## Prerequisites
 
@@ -34,13 +34,24 @@ Run the app!
 
 ## Testing
 
-curl
+### curl
 
-    # curl
+    # curl -d '{"org": "running-ohio", "repo": "test-repo", "branch": "main"}' -H 'Content-Type: application/json' http://runningohio.com/api/v1/branches/protect
 
-Python
+### Python
 
-    # python
+    # import requests
+    # import json
+    headers = {
+        'Accept': 'application/json'
+    }
+    # data = {
+        'org':'running-ohio',
+        'repo':'test-repo',
+        'branch':'main'
+    }
+    # json = json.dumps(data)
+    # requests.post('http://runningohio.com/api/v1/branches/protect', data = json, headers = headers)
 
 ## Enable Webhook
 
