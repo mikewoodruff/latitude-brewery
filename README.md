@@ -36,7 +36,7 @@ Run the app!
 
 ### curl
 
-    # curl -d '{"org": "running-ohio", "repo": "test-repo", "branch": "main"}' -H 'Content-Type: application/json' http://runningohio.com/api/v1/branches/protect
+    # curl -d '{"org": "running-ohio", "repo": "test-repo", "branch": "main"}' -H 'Content-Type: application/json' http://127.0.0.1:5000/api/v1/branches/protect
 
 ### Python
 
@@ -51,7 +51,7 @@ Run the app!
         'branch':'main'
     }
     # json = json.dumps(data)
-    # requests.post('http://runningohio.com/api/v1/branches/protect', data = json, headers = headers)
+    # requests.post('http://127.0.0.1:5000/api/v1/branches/protect', data = json, headers = headers)
 
 ## Enable Webhook
 
