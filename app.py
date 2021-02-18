@@ -86,6 +86,10 @@ def new_issue(org, repo):
         uri = '{}/repos/{}/{}/issues'.format(os.getenv('GITHUB_URI'), org, repo)
         # send GET request
         request = requests.post(uri, data=json_body, headers=headers, verify=False)
+        if request.status_code == 201:
+            return True
+        else:
+            return False
     except Exception as e:
         print(e)
 
@@ -98,15 +102,15 @@ def hello_world():
     return 'Welcome!'
 
 # api route for protecting branch
-@app.route('/api/v1/branches/protect', methods=['PATCH'])
+@app.route('/api/v1/branches/protect', methods=['POST'])
 def main():
     try:
-        print(request.form)
+        # get post data
+        content = request.json
         # get branch id from form
-        branch = request.form.get('branch')
-        org = request.form.get('org')
-        repo = request.form.get('repo')
-        owner = request.form.get('owner')
+        branch = content['repository']['default_branch']
+        org = content['organization']['login']
+        repo = content['repository']['name']
         # protect branch if all required params
         if branch and org and repo:
             # enabled protection
