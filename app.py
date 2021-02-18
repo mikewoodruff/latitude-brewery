@@ -7,40 +7,42 @@ import json
 import time
 from flask import Flask, make_response, request
 
-# functions
+## functions
+# enable protection on branch
 def enable_branch_protection(org, repo, branch):
     try:
         # add headers for token and api version
         headers = {
             'Authorization': 'token ' + os.getenv('GITHUB_SECRET'),
-            'Accept': 'application/vnd.github.v3+json'
+            'Accept': 'application/vnd.github.+json',
+            'Accept': 'application/json'
         }
-        # build uir
-        uri = 'https://api.github.com/repos/{}/{}/branches/{}/protection'.format(org, repo, branch)
+        # build uri
+        uri = '{}/repos/{}/{}/branches/{}/protection'.format(os.getenv('GITHUB_URI'), org, repo, branch)
         # build body
         body = {
-            'required_status_checks' : {
-                'include_admins' : False,
-                'strict' : True,
-                'contexts' : ['default']
+            'required_status_checks': {
+                'enforce_admins': True,
+                'strict': True,
+                'contexts': ['default']
             },
-            'required_pull_request_reviews' : {
-                'include_admins' : False
+            'required_pull_request_reviews': {
+                'require_code_owner_reviews': True
             },
-            'restrictions' : None,
-            'enforce_admins' : False
+            'restrictions': None,
+            'enforce_admins' : True
         }
         json_body = json.dumps(body)
         # send PUT request
-        request = requests.put(uri, data=json_body, headers=headers, verify=False).status_code
-        print(request)
-        if request == 200:
+        request = requests.put(uri, data=json_body, headers=headers, verify=False)
+        if request.status_code == 200:
             return True
         else:
             return False
     except Exception as e:
         print(e)
 
+# get branch protection
 def get_branch_protection(org, repo, branch):
     try:
         # add headers for token and api version
@@ -48,14 +50,42 @@ def get_branch_protection(org, repo, branch):
             'Authorization': 'token ' + os.getenv('GITHUB_SECRET'),
             'Accept': 'application/vnd.github.v3+json'
         }
-        # build uir
-        uri = 'https://api.github.com/repos/{}/{}/branches/{}'.format(org, repo, branch)
+        # build uri
+        uri = '{}/repos/{}/{}/branches/{}'.format(os.getenv('GITHUB_URI'), org, repo, branch)
         # send GET request
         request = json.loads(requests.get(uri, headers=headers, verify=False).content)
-        if request['protected'] == True:
+        if request['protected']:
             return True
         else:
             return False
+    except Exception as e:
+        print(e)
+
+# create new issue with @mention
+def new_issue(org, repo):
+    try:
+        # add headers for token and api version
+        headers = {
+            'Authorization': 'token ' + os.getenv('GITHUB_SECRET'),
+            'Accept': 'application/vnd.github.v3+json'
+        }
+        body = {
+            'title': 'Main branch protection added',
+            'body': '@mikewoodruff heads up! Branch protection was added successfully to main. \n\n' \
+                    '**Protection Added** \n' \
+                    ' - Require pull request reviews before merging \n' \
+                        '   - Required approving reviews: 1 \n' \
+                        '   - Require review from Code Owners \n' \
+                    ' - Require status checks to pass before merge \n' \
+                        '   - Require branches to be up to date before merging \n' \
+                        '   - Status checks: default \n' \
+                    ' - Include Administrators \n'
+        }
+        json_body = json.dumps(body)
+        # build uri
+        uri = '{}/repos/{}/{}/issues'.format(os.getenv('GITHUB_URI'), org, repo)
+        # send GET request
+        request = requests.post(uri, data=json_body, headers=headers, verify=False)
     except Exception as e:
         print(e)
 
@@ -71,35 +101,39 @@ def hello_world():
 @app.route('/api/v1/branches/protect', methods=['PATCH'])
 def main():
     try:
+        print(request.form)
         # get branch id from form
         branch = request.form.get('branch')
         org = request.form.get('org')
         repo = request.form.get('repo')
+        owner = request.form.get('owner')
         # protect branch if all required params
-        if branch is not None and org is not None and repo is not None:
+        if branch and org and repo:
             # enabled protection
             enable_protection = enable_branch_protection(org, repo, branch)
             # if protection was set, check repo to verify
-            if enable_protection == True:
+            if enable_protection:
                 # sleep for a second to allow the next call to return successfully
                 time.sleep(1)
                 # test to see if protection exists
                 get_protection = get_branch_protection(org, repo, branch)
-                if get_protection == True:
-                    # return successful  response
+                if get_protection:
+                    # create new issue
+                    new_issue(org, repo)
+                    # return successful response
                     return make_response(
                         json.dumps({'Success':True}),
                         200
                     )
                 else:
-                    # something went wrong
+                    # get_protection=False
                     # return response
                     return make_response(
                         json.dumps({'Error':'Something went wrong there!'}),
                         400
                     )
             else:
-                # something went wrong
+                # enable_protection=False
                 # return response
                 return make_response(
                     json.dumps({'Error':'Something went wrong while enabling protection!'}),
@@ -120,4 +154,5 @@ def main():
         )
 
 # start app
-app.run(debug=True, port=5000)
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
