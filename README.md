@@ -16,31 +16,31 @@ By default, the app will run on port 5000 and in debug mode. You can update the 
 
 First, clone the repository
 
-  $ git clone http://github.com/mikewoodruff/runningohio
-  $ cd runningohio
+    $ git clone http://github.com/mikewoodruff/runningohio
+    $ cd runningohio
 
 Create a virtualenv, and activate it
 
-  $ virtualenv env 
-  $ source env/bin/activate
+    $ virtualenv env 
+    $ source env/bin/activate
 
 Install requirements
 
-  $ pip install -r requirements.txt
+    $ pip install -r requirements.txt
 
 Run the app!
 
-  $ python3 app.py
+    $ python3 app.py
 
 ## Testing
 
 curl
 
-  $ curl
+    $ curl
 
 Python
 
-  $ python
+    $ python
 
 ## Enable Webhook
 
