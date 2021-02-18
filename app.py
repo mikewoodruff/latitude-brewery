@@ -99,7 +99,7 @@ app = Flask(__name__)
 # default route
 @app.route('/')
 def hello_world():
-    return 'Welcome!'
+    return 'Welcome to runningohio.com!'
 
 # api route for protecting branch
 @app.route('/api/v1/branches/protect', methods=['POST'])

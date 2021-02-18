@@ -1,42 +1,40 @@
-# latitude-brewery
+# runningohio
 
-Python app to protect main branches on newly created GitHub repos using GitHub webhooks.
+Python app that adds protection on your main branches, for newly created GitHub repos, using GitHub webhooks.
 
+## Prerequisites
 
-### Prerequisites
+Python 3.8+, pip, virtualenv
 
-Python 3.8+, python-pip, virtualenv
+## Configuration
 
-```
-Give examples
-```
+By default, the app will run on port 5000 and in debug mode. You can update the port and disable debugging on this line.
+$ app.run(debug=True, port=5000)
 
-### Installing
+## Installing
 
-A step by step series of examples that tell you how to get a development env running
+First, clone the repository
+$ git clone http://github.com/mikewoodruff/runningohio
+$ cd runningohio
 
-Say what the step will be
+Create a virtualenv, and activate it
+$ virtualenv env 
+$ source env/bin/activate
 
-```
-Give the example
-```
+Install requirements
+$ pip install -r requirements.txt
 
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-
-## GitHub Webhook
-
-Information on enabling webhook for repo creation
+Run the app!
+$ python3 app.py
 
 ## Testing
 
-Test local
+curl
+$ curl
 
-Test production
-GitHub payload
+Python
+$ python
+
+## Enable Webhook
+
+Enable webhook for your organization
