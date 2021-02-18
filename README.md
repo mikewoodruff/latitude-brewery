@@ -46,12 +46,15 @@ Run the app!
         'Accept': 'application/json'
     }
     # data = {
-        'org':'running-ohio',
-        'repo':'test-repo',
-        'branch':'main'
+        'repository':{
+            'default_branch': 'main',
+            'name': 'test-repo'
+        },
+        'organization':{
+            'login': 'running-ohio'
+        }
     }
-    # json = json.dumps(data)
-    # requests.post('http://127.0.0.1:5000/api/v1/branches/protect', data = json, headers = headers)
+    # requests.post('http://127.0.0.1:5000/api/v1/branches/protect', json = data, headers = headers)
 
 ## Enable Webhook
 

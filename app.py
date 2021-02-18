@@ -106,7 +106,7 @@ def hello_world():
 def main():
     try:
         # get post data
-        content = request.json
+        content = request.get_json()
         # get branch id from form
         branch = content['repository']['default_branch']
         org = content['organization']['login']
