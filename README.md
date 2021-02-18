@@ -10,7 +10,7 @@ Python 3.8+, pip, virtualenv
 
 By default, the app will run on port 5000 and in debug mode. You can update the port and disable debugging on this line.
 
-  $ app.run(debug=True, port=5000)
+    $ app.run(debug=True, port=5000)
 
 ## Installing
 
