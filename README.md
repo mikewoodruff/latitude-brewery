@@ -32,6 +32,10 @@ Install requirements
 
     # pip install -r requirements.txt
 
+Create .env and add your token
+
+    # cp .env-template .env
+
 Run the app!
 
     # python3 app.py
@@ -62,7 +66,7 @@ Run the app!
 
 ## Enable Webhook
 
-Enable webhook for your organization.
+Enable a Webhook for your organization.
 
 1. Navigate to your organizations account settings.
 2. Click on Webhooks in the navbar.
