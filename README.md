@@ -67,5 +67,5 @@ Enable webhook for your organization.
     2. Click on Webhooks in the navbar.
     3. Click Add Webhook.
     
-    ![Add Webhook](/docs/webhook1.jpg?raw=true "Add Webhook")
-    ![Select Repo](/docs/webhook2.jpg?raw=true "Select Repo")
+![Add Webhook](https://github.com/mikewoodruff/runningohio/tree/feature-branch/docs/webhook1.png)
+![Select Repo](https://github.com/mikewoodruff/runningohio/tree/feature-branch/docs/webhook2.png)
