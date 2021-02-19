@@ -41,6 +41,7 @@ Run the app!
     # python3 app.py
 
 ## Testing
+Create a new public organizational repo with the option 'Add a README file' selected. Update the values for your repo name and organization name in the examplese below.
 
 ### curl
 
