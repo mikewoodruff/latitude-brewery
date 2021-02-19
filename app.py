@@ -41,6 +41,7 @@ def enable_branch_protection(org, repo, branch):
             return False
     except Exception as e:
         print(e)
+        return False
 
 # get branch protection
 def get_branch_protection(org, repo, branch):
@@ -60,6 +61,7 @@ def get_branch_protection(org, repo, branch):
             return False
     except Exception as e:
         print(e)
+        return False
 
 # create new issue with @mention
 def new_issue(org, repo):
@@ -92,6 +94,7 @@ def new_issue(org, repo):
             return False
     except Exception as e:
         print(e)
+        return False
 
 # create app instance
 app = Flask(__name__)
@@ -115,7 +118,7 @@ def main():
         if branch and org and repo:
             # enabled protection
             enable_protection = enable_branch_protection(org, repo, branch)
-            # if protection was set, check repo to verify
+            # if protection was set successfully, check repo to verify
             if enable_protection:
                 # sleep for a second to allow the next call to return successfully
                 time.sleep(1)
@@ -123,37 +126,44 @@ def main():
                 get_protection = get_branch_protection(org, repo, branch)
                 if get_protection:
                     # create new issue
-                    new_issue(org, repo)
-                    # return successful response
-                    return make_response(
-                        json.dumps({'Success':True}),
-                        200
-                    )
+                    issue = new_issue(org, repo)
+                    if issue:
+                        # return successful response
+                        return make_response(
+                            json.dumps({'Success':True}),
+                            200
+                        )
+                    else:
+                        # return partial success
+                        return make_response(
+                            json.dumps({'Success':True, 'Message':'Protection was enabled, but an issue could not be created.'}),
+                            200
+                        )
                 else:
                     # get_protection=False
                     # return response
                     return make_response(
-                        json.dumps({'Error':'Something went wrong there!'}),
+                        json.dumps({'Success':False, 'Message':'Something went wrong while enabling protection!'}),
                         400
                     )
             else:
                 # enable_protection=False
                 # return response
                 return make_response(
-                    json.dumps({'Error':'Something went wrong while enabling protection!'}),
+                    json.dumps({'Success':False, 'Message':'Something went wrong while enabling protection!'}),
                     400
                 )
         else:
             # do not have all parameters needed
             # return response
             return make_response(
-                json.dumps({'Error':'Please specify the correct parameters (branch, owner, repo)'}),
+                json.dumps({'Success':False, 'Message':'Please specify the correct parameters (branch, owner, repo)'}),
                 400
             )
     except Exception as e:
         # return exception
         return make_response(
-            json.dumps({'Error':e}),
+            json.dumps({'Success':False, 'Message':e}),
             500
         )
 
