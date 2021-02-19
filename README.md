@@ -12,6 +12,10 @@ By default, the app will run on port 5000 and in debug mode. You can update the 
 
     app.run(debug=True, port=5000)
 
+You will also need to update .env to set the environmental variable [GITHUB_SECRET] for GitHub access. This should be an access token with the correct repo permissions.
+
+    GITHUB_SECRET=TOKEN
+
 ## Installing
 
 First, clone the repository
@@ -36,7 +40,7 @@ Run the app!
 
 ### curl
 
-    # curl -d '{"org": "running-ohio", "repo": "test-repo", "branch": "main"}' -H 'Content-Type: application/json' http://127.0.0.1:5000/api/v1/branches/protect
+    # curl -d '{"repository": {"default_branch": "main", "name": "test-repo"}, "organization": {"login": "running-ohio"}}' -H 'Content-Type: application/json' http://127.0.0.1:5000/api/v1/branches/protect
 
 ### Python
 
@@ -58,4 +62,16 @@ Run the app!
 
 ## Enable Webhook
 
-Enable webhook for your organization
+Enable webhook for your organization.
+
+1. Navigate to your organizations account settings.
+2. Click on Webhooks in the navbar.
+3. Click Add Webhook.
+4. Add Payload URL to your web service and select 'application/json' as the content type.
+    
+![](https://github.com/mikewoodruff/runningohio/blob/feature-branch/docs/webhook1.png?raw=true)
+
+5. Select 'Let me select individual events' under event triggers.
+6. Select Repositories.
+7. Click Add Webhook
+![](https://github.com/mikewoodruff/runningohio/blob/feature-branch/docs/webhook2.png?raw=true)
