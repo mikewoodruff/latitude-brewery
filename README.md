@@ -67,6 +67,11 @@ Enable webhook for your organization.
 1. Navigate to your organizations account settings.
 2. Click on Webhooks in the navbar.
 3. Click Add Webhook.
+4. Add Payload URL to your web service and select 'application/json' as the content type.
     
 ![](https://github.com/mikewoodruff/runningohio/blob/feature-branch/docs/webhook1.png?raw=true)
+
+5. Select 'Let me select individual events' under event triggers.
+6. Select Repositories.
+7. Click Add Webhook
 ![](https://github.com/mikewoodruff/runningohio/blob/feature-branch/docs/webhook2.png?raw=true)
