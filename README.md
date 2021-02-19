@@ -20,7 +20,7 @@ This app uses a personal access token for API access. You will also need to upda
 
 First, clone the repository
 
-    # git clone http://github.com/mikewoodruff/runningohio
+    # git clone https://github.com/mikewoodruff/runningohio
     # cd runningohio
 
 Create a virtualenv, and activate it
